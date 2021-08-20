@@ -37,7 +37,7 @@ def add_user():
     new_user2 = driver.find_element_by_xpath("//*[@id=\"ResultPanePlaceHolder_ctl00_ctl02_ctl01_MailboxListView_ToolBar_NewMailBoxSplitButton_DropDown\"]/div[1]/a")
     new_user2.click()
 
-    time.sleep(0.1)
+    time.sleep(1)
 
     handles = driver.window_handles
     driver.switch_to_window(handles[1])
@@ -72,6 +72,20 @@ def add_user():
 
     wymagaj_zmiany_hasla = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxResetPasswordOnNextLogon_label")
     wymagaj_zmiany_hasla.click()
+
+
+    nazwa_logowania_sufix = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_listDomain")
+    nazwa_logowania_sufix.click()
+    nazwa_logowania_sufix2 = driver.find_element_by_xpath("//*[@id=\"ResultPanePlaceHolder_NewMailbox_contentContainer_listDomain\"]/option[3]")
+    nazwa_logowania_sufix2.click()
+
+    wiecej_opcji = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_moreOptions_label")
+    wiecej_opcji.click()
+
+    baza_danych_skrzynek = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_pickerMailboxDatabase_ctl00_browseButton")
+    baza_danych_skrzynek.click()
+
+    
 
 
 
