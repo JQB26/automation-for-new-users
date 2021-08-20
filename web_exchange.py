@@ -2,6 +2,7 @@ from selenium import webdriver
 import time
 import json
 import os
+import getpass
 
 
 driver = webdriver.Firefox(executable_path=r'C:\My Things\geckodriver.exe')
@@ -16,8 +17,13 @@ def login(username_data):
     password = driver.find_element_by_name("password")
     password.click()
     password.clear()
-    password_input = input("Enter a password for web_exchange:\n")
-    password.send_keys(password_input)
+    
+    try:
+        p = getpass.getpass()
+    except Exception as error:
+        print('ERROR', error)
+    else:
+        password.send_keys(p)
 
     sign_in = driver.find_element_by_class_name("signinbutton")
     sign_in.click()
