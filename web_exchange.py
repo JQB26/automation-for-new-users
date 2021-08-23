@@ -3,7 +3,7 @@ import time
 import json
 import os
 import getpass
-
+import sys
 
 driver = webdriver.Firefox(executable_path=r'C:\My Things\geckodriver.exe')
 
@@ -29,7 +29,7 @@ def login(username_data):
     sign_in.click()
 
 
-def add_user():
+def add_user(alias, name, surname, password):
     driver.switch_to_frame(driver.find_element_by_tag_name("iframe"))
 
     new_user = driver.find_element_by_class_name("ToolBarButtonLnk")
@@ -43,21 +43,13 @@ def add_user():
     handles = driver.window_handles
     driver.switch_to_window(handles[1])
 
-    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxAlias", "jkowalski")
-
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxAlias", alias)
     click_id("ResultPanePlaceHolder_NewMailbox_contentContainer_rblMailboxTypeSelectNew")
-
-    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_ctl09_tbxFirstName", "Jan")
-
-    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_ctl09_tbxLastName", "Kowalski")
-
-    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxUserPrincipalName", "jkowalski")
-
-    haslo = "haslo123"
-    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxPassword", haslo)
-
-    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxConfirmPassword", haslo)
-
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_ctl09_tbxFirstName", name)
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_ctl09_tbxLastName", surname)
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxUserPrincipalName", alias)
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxPassword", password)
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxConfirmPassword", password)
     click_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxResetPasswordOnNextLogon_label")
 
     click_id("ResultPanePlaceHolder_NewMailbox_contentContainer_listDomain")
@@ -88,22 +80,32 @@ def type_id(item, input):
 
 
 
+def main(alias, imie, nazwisko):
+    #args = sys.argv[1:]
 
-def main():
+    #if len(args) == 3:
+    #alias = args[0]
+    #imie = args[1]
+    #nazwisko = args[2]
+
+    print(alias, imie, nazwisko)
+
     path = os.getcwd() + "\data\web_exchange.json"
     file = open(path)
     data = json.load(file)
 
     driver.get(data['web_address'])
-    time.sleep(0.2)
+    time.sleep(1)
     login(data['login'])
     time.sleep(1)
 
-    add_user()
-
+    add_user(alias, imie, nazwisko, getpass.getpass())
+    #else:
+        #print("Invalid input")
+    
 
 
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1], sys.argv[2], sys.argv[3])
