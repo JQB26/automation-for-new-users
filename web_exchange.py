@@ -31,6 +31,7 @@ def login(username_data):
 
 def add_user():
     driver.switch_to_frame(driver.find_element_by_tag_name("iframe"))
+
     new_user = driver.find_element_by_class_name("ToolBarButtonLnk")
     new_user.click()
 
@@ -42,51 +43,48 @@ def add_user():
     handles = driver.window_handles
     driver.switch_to_window(handles[1])
 
-    alias = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxAlias")
-    alias.click()
-    alias.send_keys("jkowalski")
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxAlias", "jkowalski")
 
-    nowy_uzytkownik_button = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_rblMailboxTypeSelectNew")
-    nowy_uzytkownik_button.click()
+    click_id("ResultPanePlaceHolder_NewMailbox_contentContainer_rblMailboxTypeSelectNew")
 
-    imie = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_ctl09_tbxFirstName")
-    imie.click()
-    imie.send_keys("Jan")
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_ctl09_tbxFirstName", "Jan")
 
-    nazwisko = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_ctl09_tbxLastName")
-    nazwisko.click()
-    nazwisko.send_keys("Kowalski")
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_ctl09_tbxLastName", "Kowalski")
 
-    nazwa_logowania = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxUserPrincipalName")
-    nazwa_logowania.click()
-    nazwa_logowania.send_keys("jkowalski")
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxUserPrincipalName", "jkowalski")
 
     haslo = "haslo123"
-    nowe_haslo = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxPassword")
-    nowe_haslo.click()
-    nowe_haslo.send_keys(haslo)
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxPassword", haslo)
 
-    potwierdz_haslo = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxConfirmPassword")
-    potwierdz_haslo.click()
-    potwierdz_haslo.send_keys(haslo)
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxConfirmPassword", haslo)
 
-    wymagaj_zmiany_hasla = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxResetPasswordOnNextLogon_label")
-    wymagaj_zmiany_hasla.click()
+    click_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxResetPasswordOnNextLogon_label")
 
-
-    nazwa_logowania_sufix = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_listDomain")
-    nazwa_logowania_sufix.click()
+    click_id("ResultPanePlaceHolder_NewMailbox_contentContainer_listDomain")
     nazwa_logowania_sufix2 = driver.find_element_by_xpath("//*[@id=\"ResultPanePlaceHolder_NewMailbox_contentContainer_listDomain\"]/option[3]")
     nazwa_logowania_sufix2.click()
 
-    wiecej_opcji = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_moreOptions_label")
-    wiecej_opcji.click()
+    click_id("ResultPanePlaceHolder_NewMailbox_contentContainer_moreOptions_label")
 
-    baza_danych_skrzynek = driver.find_element_by_id("ResultPanePlaceHolder_NewMailbox_contentContainer_pickerMailboxDatabase_ctl00_browseButton")
-    baza_danych_skrzynek.click()
+    click_id("ResultPanePlaceHolder_NewMailbox_contentContainer_pickerOrganizationalUnit_ctl00_browseButton")
+    expand1 = driver.find_element_by_xpath("/html/body/form/div[2]/div[1]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/div/div/div[2]/div/div[3]/div[2]/div/div[2]/div[1]/div[1]/div")
+    expand1.click()
+    selection = driver.find_element_by_xpath("/html/body/form/div[2]/div[1]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/div/div/div[2]/div/div[3]/div[2]/div/div[2]/div[1]/div[2]/div[10]/div[1]")
+    selection.click()
+    click_id("dlgModalError_OK")
+
 
     
 
+def click_id(item):
+    element = driver.find_element_by_id(item)
+    element.click()
+
+def type_id(item, input):
+    element = driver.find_element_by_id(item)
+    element.click()
+    element.clear()
+    element.send_keys(input)
 
 
 
