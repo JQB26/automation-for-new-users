@@ -4,6 +4,7 @@ import json
 import os
 import getpass
 import sys
+import password_generator
 
 driver = webdriver.Firefox(executable_path=r'C:\My Things\geckodriver.exe')
 
@@ -81,15 +82,6 @@ def type_id(item, input):
 
 
 def main(alias, imie, nazwisko):
-    #args = sys.argv[1:]
-
-    #if len(args) == 3:
-    #alias = args[0]
-    #imie = args[1]
-    #nazwisko = args[2]
-
-    print(alias, imie, nazwisko)
-
     path = os.getcwd() + "\data\web_exchange.json"
     file = open(path)
     data = json.load(file)
@@ -99,9 +91,9 @@ def main(alias, imie, nazwisko):
     login(data['login'])
     time.sleep(1)
 
-    add_user(alias, imie, nazwisko, getpass.getpass())
-    #else:
-        #print("Invalid input")
+    password = password_generator.generate_password()
+    print("users password:\n", password)
+    add_user(alias, imie, nazwisko, password)
     
 
 

@@ -1,10 +1,7 @@
-#import web_exchange
 from tkinter import *
 from tkinter import ttk
 import tkinter
 import web_exchange
-import os
-
 
 def main():
     window = Tk()
