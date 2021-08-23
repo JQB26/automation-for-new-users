@@ -2,6 +2,11 @@ from tkinter import *
 from tkinter import ttk
 import tkinter
 import web_exchange
+import mail
+
+
+
+
 
 def main():
     window = Tk()
@@ -20,15 +25,21 @@ def main():
     c1 = Entry(window, textvariable=alias).grid(row = 2,column = 1)
 
 
-    var_d = tkinter.IntVar
-    d = tkinter.Checkbutton(window, text="mail",variable=var_d, onvalue=1, offvalue=0).grid(row=5,column=0)
+    var_d = tkinter.IntVar()
+    exchange = tkinter.Checkbutton(window, text="exchange",variable=var_d, onvalue=1, offvalue=0).grid(row=4,column=0)
+    var_e = tkinter.IntVar()
+    office365 = tkinter.Checkbutton(window, text="office365",variable=var_e, onvalue=1, offvalue=0).grid(row=5,column=0)
 
 
     def begin():
-        print("web exchange")
-        web_exchange.main(alias.get() ,imie.get(), nazwisko.get())
+        if var_d.get() == 1:
+            print("exchange")
+            web_exchange.main(alias.get() ,imie.get(), nazwisko.get())
+        if var_e.get() == 1:
+            print("office")
+            mail.main()
 
-    submit_button = ttk.Button(window ,text="Submit", command=begin).grid(row=4,column=0)
+    submit_button = ttk.Button(window ,text="Submit", command=begin).grid(row=6,column=0)
     window.mainloop()
 
 
