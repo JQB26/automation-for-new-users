@@ -10,8 +10,10 @@ def main():
     file = open(path)
     data = json.load(file)
 
-    message_subject = data['message_subject']
-    message_content = data["message_content"]
+    subject = open(os.getcwd() + "\data\subject.txt", encoding='utf8')
+    message_subject = subject.read()
+    content = open(os.getcwd() + "\data\content.txt", encoding='utf8')
+    message_content = content.read()
     message_to = data['adresat']
 
     # stworzenie maila

@@ -7,7 +7,7 @@ import sys
 import password_generator
     
 
-driver = webdriver.Firefox(executable_path=r'C:\My Things\geckodriver.exe')
+driver = webdriver.Firefox(executable_path=r'geckodriver.exe')
 
 
 def login(username_data):
@@ -31,7 +31,7 @@ def login(username_data):
     sign_in.click()
 
 
-def add_user(alias, name, surname, password):
+def add_user(alias, name, surname, group, password):
     driver.switch_to_frame(driver.find_element_by_tag_name("iframe"))
 
     new_user = driver.find_element_by_class_name("ToolBarButtonLnk")
@@ -49,6 +49,7 @@ def add_user(alias, name, surname, password):
     click_id("ResultPanePlaceHolder_NewMailbox_contentContainer_rblMailboxTypeSelectNew")
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_ctl09_tbxFirstName", name)
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_ctl09_tbxLastName", surname)
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxDisplayName", name + " " + surname + " (" + group + ")")
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxUserPrincipalName", alias)
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxPassword", password)
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxConfirmPassword", password)
@@ -82,7 +83,7 @@ def type_id(item, input):
 
 
 
-def main(alias, imie, nazwisko):
+def main(alias, imie, nazwisko, grupa):
     path = os.getcwd() + "\data\web_exchange.json"
     file = open(path)
     data = json.load(file)
@@ -94,11 +95,11 @@ def main(alias, imie, nazwisko):
 
     password = password_generator.generate_password()
     print("users password:\n", password)
-    add_user(alias, imie, nazwisko, password)
+    add_user(alias, imie, nazwisko, grupa, password)
     
 
 
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2], sys.argv[3])
+    main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
