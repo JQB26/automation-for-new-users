@@ -62,6 +62,9 @@ def add_user(alias, name, surname, group, password):
     click_id("ResultPanePlaceHolder_NewMailbox_contentContainer_moreOptions_label")
 
     click_id("ResultPanePlaceHolder_NewMailbox_contentContainer_pickerOrganizationalUnit_ctl00_browseButton")
+
+    time.sleep(1)
+
     expand1 = driver.find_element_by_xpath("/html/body/form/div[2]/div[1]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/div/div/div[2]/div/div[3]/div[2]/div/div[2]/div[1]/div[1]/div")
     expand1.click()
     selection = driver.find_element_by_xpath("/html/body/form/div[2]/div[1]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/div/div/div[2]/div/div[3]/div[2]/div/div[2]/div[1]/div[2]/div[10]/div[1]")
@@ -97,8 +100,6 @@ def main(alias, imie, nazwisko, grupa):
     print("users password:\n", password)
     add_user(alias, imie, nazwisko, grupa, password)
     
-
-
 
 
 if __name__ == "__main__":

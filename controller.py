@@ -37,12 +37,13 @@ def main():
         if var_ad.get() == 1:
             print("ad")
             # subprocess.run(['powershell.exe', 'active_directory.ps1 arg1 @('])
-        if var_exchange.get() == 1:
-            print("exchange")
-            web_exchange.main(alias.get() ,imie.get(), nazwisko.get(), grupa.get())
         if var_office.get() == 1:
-            print("office")
             mail.main()
+            print("mail sent")
+        if var_exchange.get() == 1:
+            web_exchange.main(alias.get() ,imie.get(), nazwisko.get(), grupa.get())
+            print("exchange account created")
+        
 
     submit_button = ttk.Button(window ,text="Submit", command=begin).grid(row=8,column=0)
     window.mainloop()

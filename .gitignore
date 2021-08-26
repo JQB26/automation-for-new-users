@@ -3,5 +3,3 @@ geckodriver.log
 build
 _pycache_
 controller.spec
-new_user.py
-geckodriver.exe

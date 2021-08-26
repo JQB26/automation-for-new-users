@@ -2,7 +2,7 @@ import sys
 import subprocess
 import pkg_resources
 
-required = {'selenium','tk'} 
+required = {'selenium','tk','pywin32'} 
 installed = {pkg.key for pkg in pkg_resources.working_set}
 missing = required - installed
 
