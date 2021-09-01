@@ -1,21 +1,25 @@
+import argparse
 from selenium import webdriver
 import time
 import json
 import os
 import getpass
-import sys
 import password_generator
-    
+import csv
+import sys
+
 
 driver = webdriver.Firefox(executable_path=r'geckodriver.exe')
 
 
-def login(username_data):
-    username = driver.find_element_by_name("username")
-    username.click()
-    username.clear()
-    username.send_keys(username_data)
+def loginSuccessful():
+    try:
+        wrong = driver.find_element_by_id("signInErrorDiv")
+        return False
+    except:
+        return True
 
+def password_login():
     password = driver.find_element_by_name("password")
     password.click()
     password.clear()
@@ -31,7 +35,22 @@ def login(username_data):
     sign_in.click()
 
 
-def add_user(alias, name, surname, group, password):
+def login(username_data):
+    username = driver.find_element_by_name("username")
+    username.click()
+    username.clear()
+    username.send_keys(username_data)
+
+    password_login()
+
+    time.sleep(1)
+
+    while not(loginSuccessful()):
+        password_login()
+
+
+def add_user(name, surname, password):
+    alias = name.lower() + "." + surname.lower()
     driver.switch_to_frame(driver.find_element_by_tag_name("iframe"))
 
     new_user = driver.find_element_by_class_name("ToolBarButtonLnk")
@@ -49,8 +68,8 @@ def add_user(alias, name, surname, group, password):
     click_id("ResultPanePlaceHolder_NewMailbox_contentContainer_rblMailboxTypeSelectNew")
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_ctl09_tbxFirstName", name)
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_ctl09_tbxLastName", surname)
-    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxDisplayName", name + " " + surname + " (" + group + ")")
-    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxUserPrincipalName", alias)
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxDisplayName", name + " " + surname + " (RZGW Kraków)")
+    type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxUserPrincipalName", name[0].lower() + surname.lower())
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxPassword", password)
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxConfirmPassword", password)
     click_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxResetPasswordOnNextLogon_label")
@@ -72,7 +91,17 @@ def add_user(alias, name, surname, group, password):
     click_id("dlgModalError_OK")
 
 
-    
+'''
+    # TODO automatyczne wybieranie bazy skrzynek pocztowych
+
+    input("Wybierz bazę danych skrzynek pocztowych i wcisnij enter")
+
+    click_id("ResultPanePlaceHolder_ButtonsPanel_btnCommit")
+
+    time.sleep(1)
+
+'''
+
 
 def click_id(item):
     element = driver.find_element_by_id(item)
@@ -85,8 +114,7 @@ def type_id(item, input):
     element.send_keys(input)
 
 
-
-def main(alias, imie, nazwisko, grupa):
+def run(args):
     path = os.getcwd() + "\data\web_exchange.json"
     file = open(path)
     data = json.load(file)
@@ -96,11 +124,41 @@ def main(alias, imie, nazwisko, grupa):
     login(data['login'])
     time.sleep(1)
 
-    password = password_generator.generate_password()
-    print("users password:\n", password)
-    add_user(alias, imie, nazwisko, grupa, password)
+    if args.f:
+        path_osoby = os.getcwd() + "\data\osoby.csv"        
+        with open(path_osoby, newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                password = password_generator.generate_password()
+                print(row['imie'] + " " + row['nazwisko'] + " password:\n" + password)
+
+                add_user(row['imie'], row['nazwisko'], password)
+
+                what_next = input("for next person type == next ==\n to end type == exit ==\n")
+                while(what_next != "next" and what_next != "exit"):
+                    what_next = input("for next person type == next ==\n to end type == exit ==\n")
+                
+                if what_next == "exit":
+                    sys.exit()
+
+                handles = driver.window_handles
+                driver.switch_to_window(handles[0])
+    else:
+        password = password_generator.generate_password()
+        print("users password:\n", password)
+        add_user(args.n, args.s, password)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Create exchange account")
+    parser.add_argument("-f",help="data from osoby.csv", action="store_true")
+    parser.add_argument("-n",help="name (imie)")
+    parser.add_argument("-s",help="surname (nazwisko)")
+    parser.set_defaults(func=run)
+    args = parser.parse_args()
+    args.func(args)
+
     
 
-
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+    main()

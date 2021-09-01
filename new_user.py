@@ -9,10 +9,8 @@ def get_input():
     path = os.getcwd() + "\data\\temp_data.json"
     if os.path.exists(path):
         os.remove(path)
-    user = {'alias': input("alias: "),
-            'imie': input("imie: "),
-            'nazwisko': input("nazwisko: "),
-            'grupa': input("grupa: ")}
+    user = {'imie': input("imie: "),
+            'nazwisko': input("nazwisko: ")}
     with open(path, 'w') as json_file:
         json.dump(user, json_file)
 
@@ -35,7 +33,7 @@ def run(args):
             file = open(os.getcwd() + "\data\\temp_data.json")
             data = json.load(file)
 
-            command = sys.executable + ' web_exchange.py ' + data['alias'] + ' ' + data['imie'] + ' ' + data['nazwisko'] + ' ' + data['grupa']
+            command = sys.executable + ' web_exchange.py ' + ' -n ' + data['imie'] + ' -s ' + data['nazwisko']
             os.system(command)
 
             print("exchange account created")

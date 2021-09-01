@@ -1,8 +1,9 @@
 from tkinter import *
 from tkinter import ttk
 import tkinter
-import web_exchange
 import mail
+import sys
+import os
 
 
 def main():
@@ -10,19 +11,13 @@ def main():
     window.title("New user form")
     window.geometry('400x400')
 
-    alias = tkinter.StringVar()
     imie = tkinter.StringVar()
     nazwisko = tkinter.StringVar()
-    grupa = tkinter.StringVar()
 
     a = Label(window ,text = "Imie").grid(row = 0,column = 0)
     b = Label(window ,text = "Nazwisko").grid(row = 1,column = 0)
-    c = Label(window ,text = "alias").grid(row = 2,column = 0)
-    d = Label(window, text = "grupa").grid(row = 3, column = 0)
     a1 = Entry(window, textvariable=imie).grid(row = 0,column = 1)
     b1 = Entry(window, textvariable=nazwisko).grid(row = 1,column = 1)
-    c1 = Entry(window, textvariable=alias).grid(row = 2,column = 1)
-    d1 = Entry(window, textvariable=grupa).grid(row = 3, column = 1)
 
 
     var_ad = tkinter.IntVar()
@@ -41,7 +36,9 @@ def main():
             mail.main()
             print("mail sent")
         if var_exchange.get() == 1:
-            web_exchange.main(alias.get() ,imie.get(), nazwisko.get(), grupa.get())
+            command = sys.executable + ' web_exchange.py ' + ' -n ' + imie.get() + ' -s ' + nazwisko.get()
+            os.system(command)
+
             print("exchange account created")
         
 
