@@ -6,7 +6,7 @@ NUMBERS = string.digits
 PUNCTUATION = string.punctuation
 
 def generate_password(length=8):
-    printable = f'{LETTERS}{NUMBERS}{PUNCTUATION}'
+    printable = f'{LETTERS}{NUMBERS}'
 
     printable = list(printable)
     random.shuffle(printable)

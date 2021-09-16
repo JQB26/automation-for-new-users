@@ -14,7 +14,7 @@ driver = webdriver.Firefox(executable_path=r'geckodriver.exe')
 
 def loginSuccessful():
     try:
-        wrong = driver.find_element_by_id("signInErrorDiv")
+        driver.find_element_by_id("signInErrorDiv")
         return False
     except:
         return True
@@ -126,11 +126,11 @@ def run(args):
 
     if args.f:
         path_osoby = os.getcwd() + "\data\osoby.csv"        
-        with open(path_osoby, newline='') as csvfile:
+        with open(path_osoby, newline='',encoding="utf-8") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 password = password_generator.generate_password()
-                print(row['imie'] + " " + row['nazwisko'] + " password:\n" + password)
+                print(row['imie'] + " " + row['nazwisko'] + " password:\n" + password + "\n------------------------")
 
                 add_user(row['imie'], row['nazwisko'], password)
 
