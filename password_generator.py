@@ -3,7 +3,7 @@ import random
 
 LETTERS = string.ascii_letters
 NUMBERS = string.digits
-PUNCTUATION = string.punctuation
+PUNCTUATION = "!@#$%&*()<>{}[]?=+"
 
 def generate_password(length=8):
     printable = f'{LETTERS}{NUMBERS}{PUNCTUATION}'

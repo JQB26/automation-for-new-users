@@ -1,12 +1,10 @@
 # coding=utf-8
 
-import argparse
 from selenium import webdriver
 import time
 import json
 import os
 import getpass
-import password_generator
 import csv
 import sys
 
@@ -61,7 +59,7 @@ def login(username_data):
         password_login()
 
 
-def add_user(name, surname, password):
+def add_user(userPrincipalName, name, surname, password):
     alias = removeAccents(name.lower() + "." + surname.lower())
     driver.switch_to_frame(driver.find_element_by_tag_name("iframe"))
 
@@ -83,7 +81,6 @@ def add_user(name, surname, password):
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_ctl09_tbxFirstName", name)
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_ctl09_tbxLastName", surname)
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxDisplayName", name + " " + surname + " (RZGW Kraków)")
-    userPrincipalName = removeAccents(name[0].lower() + surname.lower())
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxUserPrincipalName", userPrincipalName)
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxPassword", password)
     type_id("ResultPanePlaceHolder_NewMailbox_contentContainer_tbxConfirmPassword", password)
@@ -129,7 +126,7 @@ def type_id(item, input):
     element.send_keys(input)
 
 
-def run(args):
+def run():
     path = os.getcwd() + "\data\web_exchange.json"
     file = open(path)
     data = json.load(file)
@@ -139,41 +136,25 @@ def run(args):
     login(data['login'])
     time.sleep(1)
 
-    if args.f:
-        path_osoby = os.getcwd() + "\data\\new_users.csv"
-        with open(path_osoby, newline='', encoding="utf-8") as csvfile:
-            reader = csv.DictReader(csvfile, delimiter=';')
-            for row in reader:
-                #password = password_generator.generate_password()
-                #print(row['imie'] + " " + row['nazwisko'] + " password:\n" + password + "\n------------------------")
+    path_osoby = os.getcwd() + "\data\\new_users.csv"
+    with open(path_osoby, newline='', encoding="utf-8") as csvfile:
+        reader = csv.DictReader(csvfile, delimiter=';')
+        for row in reader:
+            add_user(row['sammaccountname'], row['givenname'], row['surname'], row['password'])
 
-                add_user(row['givenname'], row['surname'], row['password'])
-
+            what_next = input("for next person type: next\n to end type: exit\n")
+            while(what_next != "next" and what_next != "exit"):
                 what_next = input("for next person type: next\n to end type: exit\n")
-                while(what_next != "next" and what_next != "exit"):
-                    what_next = input("for next person type: next\n to end type: exit\n")
-                
-                if what_next == "exit":
-                    sys.exit()
+            
+            if what_next == "exit":
+                sys.exit()
 
-                handles = driver.window_handles
-                driver.switch_to_window(handles[0])
-    else:
-        password = password_generator.generate_password()
-        print("users password:\n", password)
-        add_user(args.n, args.s, password)
-
+            handles = driver.window_handles
+            driver.switch_to_window(handles[0])
 
 def main():
-    parser = argparse.ArgumentParser(description="Create exchange account")
-    parser.add_argument("-f",help="data from osoby.csv", action="store_true")
-    parser.add_argument("-n",help="name")
-    parser.add_argument("-s",help="surname")
-    parser.set_defaults(func=run)
-    args = parser.parse_args()
-    args.func(args)
+    run()
 
-    
 
 if __name__ == "__main__":
     main()

@@ -38,7 +38,7 @@ for row in reader:
         userprincipialname = sammaccountname + "@krakow.rzgw.gov.pl"
         ou = "OU=" + name.split(' ', 1)[1][-4:-1] + ",OU=BIURO,OU=RZGW,DC=krakow,DC=rzgw,DC=gov,DC=pl"
         Company = "RZGW Kraków"
-        emailaddress = givenname.lower() + "." + surname.lower() + "@wody.gov.pl"
+        emailaddress = removeAccents(givenname.lower()) + "." + removeAccents(surname.lower()) + "@wody.gov.pl"
         password = password_generator.generate_password()
 
         result.write(sammaccountname + ";" + name + ";" + givenname + ";" + surname + ";" + userprincipialname + ";" + ou + ";"
