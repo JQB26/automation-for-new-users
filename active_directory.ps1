@@ -1,11 +1,12 @@
-﻿'''
-
-New-ADUser -SamAccountName $user.sammaccountname -Name $user.name `
- -DisplayName $user.name -GivenName $user.givenname -Surname $user.surname`
-  -UserPrincipalName $user.userprincipialname -Path $user.distinguished -Company $user.Company`
+﻿$filePath = $PSScriptRoot + '\data\nowipracownicy.csv'
+$usersfromfile = Import-Csv $filePath -Delimiter ';'
+foreach ($user in $usersfromfile) {
+New-ADUser -Name $user.name -DisplayName $user.name -GivenName $user.givenname -Surname $user.surname`
+  -SamAccountName $user.sammaccountname -UserPrincipalName $user.userprincipialname -Path $user.ou -Company $user.Company`
   -EmailAddress $user.emailaddress -Office $user.department -Title $user.title`
-  -AccountPassword (ConvertTo-SecureString -AsPlainText $user.password -Force) -Enabled $true -ChangePasswordAtLogon $true
-
- Add-ADGroupMember biuro -Members $user.sammaccountname
+  -AccountPassword (ConvertTo-SecureString $user.password -AsPlainText -Force) -Enabled $true -ChangePasswordAtLogon $true
+  
+Add-ADGroupMember biuro -Members $user.sammaccountname
 Add-ADGroupMember zarzady -Members $user.sammaccountname
-'''
+Add-ADGroupMember pracownicybiuro -Members $user.sammaccountname
+}

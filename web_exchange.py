@@ -22,6 +22,7 @@ def removeAccents(input_text):
     return input_text.translate(translator)
 
 
+# login with correction loop
 def loginSuccessful():
     time.sleep(1)
     try:
@@ -72,6 +73,8 @@ def add_user(name, surname, password):
 
     time.sleep(1)
 
+    # main input data part
+
     handles = driver.window_handles
     driver.switch_to_window(handles[1])
 
@@ -104,7 +107,7 @@ def add_user(name, surname, password):
 
 
 '''
-    # TODO automatyczne wybieranie bazy skrzynek pocztowych
+     TODO automatyczne wybieranie bazy skrzynek pocztowych
 
     input("Wybierz bazę danych skrzynek pocztowych i wcisnij enter")
 
@@ -114,7 +117,7 @@ def add_user(name, surname, password):
 
 '''
 
-
+# help nav functions
 def click_id(item):
     element = driver.find_element_by_id(item)
     element.click()
@@ -164,8 +167,8 @@ def run(args):
 def main():
     parser = argparse.ArgumentParser(description="Create exchange account")
     parser.add_argument("-f",help="data from osoby.csv", action="store_true")
-    parser.add_argument("-n",help="name (imie)")
-    parser.add_argument("-s",help="surname (nazwisko)")
+    parser.add_argument("-n",help="name")
+    parser.add_argument("-s",help="surname")
     parser.set_defaults(func=run)
     args = parser.parse_args()
     args.func(args)
