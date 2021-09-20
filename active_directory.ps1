@@ -1,4 +1,4 @@
-﻿$filePath = $PSScriptRoot + '\data\nowipracownicy.csv'
+﻿$filePath = $PSScriptRoot + '\data\new_users.csv'
 $usersfromfile = Import-Csv $filePath -Delimiter ';'
 foreach ($user in $usersfromfile) {
 New-ADUser -Name $user.name -DisplayName $user.name -GivenName $user.givenname -Surname $user.surname`

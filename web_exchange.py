@@ -140,18 +140,18 @@ def run(args):
     time.sleep(1)
 
     if args.f:
-        path_osoby = os.getcwd() + "\data\osoby.csv"        
-        with open(path_osoby, newline='',encoding="utf-8") as csvfile:
-            reader = csv.DictReader(csvfile)
+        path_osoby = os.getcwd() + "\data\\new_users.csv"
+        with open(path_osoby, newline='', encoding="utf-8") as csvfile:
+            reader = csv.DictReader(csvfile, delimiter=';')
             for row in reader:
-                password = password_generator.generate_password()
-                print(row['imie'] + " " + row['nazwisko'] + " password:\n" + password + "\n------------------------")
+                #password = password_generator.generate_password()
+                #print(row['imie'] + " " + row['nazwisko'] + " password:\n" + password + "\n------------------------")
 
-                add_user(row['imie'], row['nazwisko'], password)
+                add_user(row['givenname'], row['surname'], row['password'])
 
-                what_next = input("for next person type == next ==\n to end type == exit ==\n")
+                what_next = input("for next person type: next\n to end type: exit\n")
                 while(what_next != "next" and what_next != "exit"):
-                    what_next = input("for next person type == next ==\n to end type == exit ==\n")
+                    what_next = input("for next person type: next\n to end type: exit\n")
                 
                 if what_next == "exit":
                     sys.exit()
