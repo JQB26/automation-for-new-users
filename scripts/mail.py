@@ -5,13 +5,13 @@ import os
 
 def main():
     # DANE DO MAILA
-    path = os.getcwd() + "\data\mail.json"
+    path = os.getcwd()[:-8] + "\data\mail.json"
     file = open(path)
     data = json.load(file)
 
-    subject = open(os.getcwd() + "\data\subject.txt", encoding='utf8')
+    subject = open(os.getcwd()[:-8] + "\data\subject.txt", encoding='utf8')
     message_subject = subject.read()
-    content = open(os.getcwd() + "\data\content.txt", encoding='utf8')
+    content = open(os.getcwd()[:-8] + "\data\content.txt", encoding='utf8')
     message_content = content.read()
     message_to = data['adresat']
 

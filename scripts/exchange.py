@@ -8,8 +8,11 @@ import getpass
 import csv
 import sys
 
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 
-driver = webdriver.Firefox(executable_path=r'geckodriver.exe')
+geckodriver_path = os.getcwd()[:-8] + "\drivers\\geckodriver.exe"
+driver = webdriver.Firefox(executable_path=geckodriver_path)
 
 
 # from "http://gentle.pl/2017/07/19/usuwanie_polskich_znakow_python.html"
@@ -102,17 +105,33 @@ def add_user(userPrincipalName, name, surname, password):
     selection.click()
     click_id("dlgModalError_OK")
 
+    time.sleep(0.5)
 
-'''
-     TODO automatyczne wybieranie bazy skrzynek pocztowych
+    click_id("ResultPanePlaceHolder_NewMailbox_contentContainer_pickerMailboxDatabase_ctl00_browseButton")
+    time.sleep(1)
 
-    input("Wybierz bazę danych skrzynek pocztowych i wcisnij enter")
+    handles = driver.window_handles
+    driver.switch_to_window(handles[2])
 
-    click_id("ResultPanePlaceHolder_ButtonsPanel_btnCommit")
+    actions1 = ActionChains(driver)
+    actions1.send_keys(Keys.TAB * 4)
+    actions1.perform()
+    time.sleep(0.5)
+    actions2 = ActionChains(driver) 
+    actions2.send_keys(Keys.DOWN * 4)
+    actions2.perform()
+    actions3 = ActionChains(driver) 
+    actions3.send_keys(Keys.ENTER)
+    actions3.perform()
+
+    time.sleep(0.5)
+
+    driver.switch_to_window(handles[1])
 
     time.sleep(1)
 
-'''
+    click_id("ResultPanePlaceHolder_ButtonsPanel_btnCommit")
+
 
 # help nav functions
 def click_id(item):
@@ -127,7 +146,7 @@ def type_id(item, input):
 
 
 def run():
-    path = os.getcwd() + "\data\web_exchange.json"
+    path = os.getcwd()[:-8] + "\data\web_exchange.json"
     file = open(path)
     data = json.load(file)
 
@@ -136,21 +155,15 @@ def run():
     login(data['login'])
     time.sleep(1)
 
-    path_osoby = os.getcwd() + "\data\\new_users.csv"
+    path_osoby = os.getcwd()[:-8] + "\data\\new_users.csv"
     with open(path_osoby, newline='', encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile, delimiter=';')
         for row in reader:
             add_user(row['sammaccountname'], row['givenname'], row['surname'], row['password'])
 
-            what_next = input("for next person type: next\n to end type: exit\n")
-            while(what_next != "next" and what_next != "exit"):
-                what_next = input("for next person type: next\n to end type: exit\n")
-            
-            if what_next == "exit":
-                sys.exit()
-
             handles = driver.window_handles
             driver.switch_to_window(handles[0])
+        sys.exit()
 
 def main():
     run()

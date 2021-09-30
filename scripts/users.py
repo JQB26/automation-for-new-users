@@ -13,12 +13,12 @@ def removeAccents(input_text):
     return input_text.translate(translator)
 
 
-
-path_new_users = os.getcwd() + "\data\\new_users.csv"
+path_new_users = os.getcwd()[:-8] + "\data\\new_users.csv"
+print(path_new_users)
 result = open(path_new_users, "w", newline='', encoding="utf-8")
 
-path_osoby = os.getcwd() + "\data\\osoby.csv"
-file = open(path_osoby, newline='', encoding="utf-8")
+path_osoby_input = os.getcwd()[:-8] + "\data\\osoby_input.csv"
+file = open(path_osoby_input, newline='', encoding="utf-8")
 reader = csv.reader(file, delimiter=';')
 
 
