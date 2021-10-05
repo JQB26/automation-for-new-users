@@ -14,7 +14,6 @@ def removeAccents(input_text):
 
 
 path_new_users = os.getcwd()[:-8] + "\data\\new_users.csv"
-print(path_new_users)
 result = open(path_new_users, "w", newline='', encoding="utf-8")
 
 path_osoby_input = os.getcwd()[:-8] + "\data\\osoby_input.csv"

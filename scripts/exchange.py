@@ -133,6 +133,64 @@ def add_user(userPrincipalName, name, surname, password):
     click_id("ResultPanePlaceHolder_ButtonsPanel_btnCommit")
 
 
+def add_attributes(mail, phone, department, position):
+    driver.switch_to_frame(driver.find_element_by_tag_name("iframe"))
+
+    action_tab = ActionChains(driver)
+    action_tab.send_keys(Keys.TAB)
+
+    action_enter = ActionChains(driver)
+    action_enter.send_keys(Keys.ENTER)
+
+    action_down = ActionChains(driver) 
+    action_down.send_keys(Keys.DOWN)
+
+    for i in range(3):
+        action_tab.perform()
+
+    action_enter.perform()
+
+    actions1 = ActionChains(driver)
+    actions1.send_keys(mail)
+    actions1.perform()
+    action_enter.perform()
+
+    for i in range(7):
+        action_tab.perform()
+        time.sleep(0.1)
+
+    action_down.perform()
+
+    time.sleep(2)
+
+    action_enter.perform()
+
+    time.sleep(2)
+
+    handles = driver.window_handles
+    driver.switch_to_window(handles[1])
+
+    information_tab = driver.find_element_by_xpath("//*[@id=\"bookmarklink_2\"]")
+    information_tab.click()
+
+    time.sleep(1)
+
+    type_id("ResultPanePlaceHolder_Mailbox_ContactInformation_contentContainer_ContactInformationPlaceHolder_ctl00_tbxCity", "Kraków")
+    type_id("ResultPanePlaceHolder_Mailbox_ContactInformation_contentContainer_ContactInformationPlaceHolder_tbxPhone", phone)
+
+    organization_tab = driver.find_element_by_xpath("//*[@id=\"bookmarklink_3\"]")
+    organization_tab.click()
+
+    time.sleep(1)
+
+    type_id("ResultPanePlaceHolder_Mailbox_Organization_contentContainer_OrganizationPlaceHolder_tbxTitle", position)
+    type_id("ResultPanePlaceHolder_Mailbox_Organization_contentContainer_OrganizationPlaceHolder_tbxDepartment", department)
+    type_id("ResultPanePlaceHolder_Mailbox_Organization_contentContainer_OrganizationPlaceHolder_tbxCompany", "RZGW Kraków")
+
+    click_id("ResultPanePlaceHolder_ButtonsPanel_btnCommit")
+
+
+
 # help nav functions
 def click_id(item):
     element = driver.find_element_by_id(item)
@@ -160,6 +218,11 @@ def run():
         reader = csv.DictReader(csvfile, delimiter=';')
         for row in reader:
             add_user(row['sammaccountname'], row['givenname'], row['surname'], row['password'])
+
+            handles = driver.window_handles
+            driver.switch_to_window(handles[0])
+
+            add_attributes(row['emailaddress'], "555222333", "Wydział Informatyki", "Młodszy Specjalista")
 
             handles = driver.window_handles
             driver.switch_to_window(handles[0])
