@@ -35,13 +35,24 @@ for row in reader:
         givenname = name.split(' ', 1)[0]
         surname = name.split(' ', 1)[1][:len(name.split(' ', 1)[1]) - 6]
         userprincipialname = sammaccountname + "@krakow.rzgw.gov.pl"
-        ou = "OU=" + name.split(' ', 1)[1][-4:-1] + ",OU=BIURO,OU=RZGW,DC=krakow,DC=rzgw,DC=gov,DC=pl"
+        department_code = name.split(' ', 1)[1][-4:-1]
+        ou = "OU=" + department_code + ",OU=BIURO,OU=RZGW,DC=krakow,DC=rzgw,DC=gov,DC=pl"
+        #department
+        path_department = os.getcwd()[:-8] + "\data\\decode_department.csv"
+        with open(path_department, newline='', encoding="utf-8") as department_file:
+            decode = csv.reader(department_file, delimiter=';')
+            for dep in decode:
+                if dep[0] == department_code:
+                    department = dep[1]
+
+
+        #
         Company = "RZGW Kraków"
         emailaddress = removeAccents(givenname.lower()) + "." + removeAccents(surname.lower()) + "@wody.gov.pl"
         password = password_generator.generate_password()
 
         result.write(sammaccountname + ";" + name + ";" + givenname + ";" + surname + ";" + userprincipialname + ";" + ou + ";"
-        + Company + ";" + emailaddress + ";;;" + password + "\n")
+        + Company + ";" + emailaddress + ";" + department +  ";;" + password + "\n")
         
     i += 1
 

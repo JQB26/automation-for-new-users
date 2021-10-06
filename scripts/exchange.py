@@ -170,6 +170,29 @@ def add_attributes(mail, phone, department, position):
     handles = driver.window_handles
     driver.switch_to_window(handles[1])
 
+    # 10 attribute
+    click_id("ResultPanePlaceHolder_Mailbox_NameAndAccount_contentContainer_NameAndAccountPlaceHolder_moreOptions_label")
+
+    edit_pen = driver.find_element_by_xpath("/html/body/form/div[3]/div/div[3]/div/div/div[1]/div/div/div[7]/div/div/div[1]/div/div/a")
+    edit_pen.click()
+
+    time.sleep(1)
+
+    N = 9
+    action1 = ActionChains(driver) 
+    action1.send_keys(Keys.TAB * N)
+    action1.perform()
+
+    action2 = ActionChains(driver)
+    action2.send_keys("Biuro")
+    action2.perform()
+
+    action3 = ActionChains(driver)
+    action3.send_keys(Keys.ENTER)
+    action3.perform()
+
+    # end
+
     information_tab = driver.find_element_by_xpath("//*[@id=\"bookmarklink_2\"]")
     information_tab.click()
 
@@ -222,7 +245,7 @@ def run():
             handles = driver.window_handles
             driver.switch_to_window(handles[0])
 
-            add_attributes(row['emailaddress'], "555222333", "Wydział Informatyki", "Młodszy Specjalista")
+            add_attributes(row['emailaddress'], "", row['department'], "")
 
             handles = driver.window_handles
             driver.switch_to_window(handles[0])
