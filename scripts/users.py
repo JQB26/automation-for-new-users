@@ -32,6 +32,8 @@ for row in reader:
     else:
         sammaccountname = row[0]
         name = row[1]
+        telephone_number = row[2]
+        title = row[3]
         givenname = name.split(' ', 1)[0]
         surname = name.split(' ', 1)[1][:len(name.split(' ', 1)[1]) - 6]
         userprincipialname = sammaccountname + "@krakow.rzgw.gov.pl"
@@ -51,8 +53,9 @@ for row in reader:
         emailaddress = removeAccents(givenname.lower()) + "." + removeAccents(surname.lower()) + "@wody.gov.pl"
         password = password_generator.generate_password()
 
-        result.write(sammaccountname + ";" + name + ";" + givenname + ";" + surname + ";" + userprincipialname + ";" + ou + ";"
-        + Company + ";" + emailaddress + ";" + department +  ";;" + password + "\n")
+        result.write(sammaccountname + ";" + name + ";" + telephone_number + ";" + title + ";" + givenname + ";" 
+        + surname + ";" + userprincipialname + ";" + ou + ";"
+        + Company + ";" + emailaddress + ";" + department +  ";" + telephone_number[-3:] + ";" + password + "\n")
         
     i += 1
 

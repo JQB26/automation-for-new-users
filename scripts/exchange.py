@@ -245,7 +245,7 @@ def run():
             handles = driver.window_handles
             driver.switch_to_window(handles[0])
 
-            add_attributes(row['emailaddress'], "", row['department'], "")
+            add_attributes(row['emailaddress'], row['telephoneNumber'], row['department'], row['title'])
 
             handles = driver.window_handles
             driver.switch_to_window(handles[0])
