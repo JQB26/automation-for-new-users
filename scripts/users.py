@@ -46,8 +46,6 @@ for row in reader:
             for dep in decode:
                 if dep[0] == department_code:
                     department = dep[1]
-
-
         #
         Company = "RZGW Kraków"
         emailaddress = removeAccents(givenname.lower()) + "." + removeAccents(surname.lower()) + "@wody.gov.pl"

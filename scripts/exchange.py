@@ -133,7 +133,7 @@ def add_user(userPrincipalName, name, surname, password):
     click_id("ResultPanePlaceHolder_ButtonsPanel_btnCommit")
 
 
-def add_attributes(mail, phone, department, position):
+def add_attributes(mail, phone, department, position, first):
     driver.switch_to_frame(driver.find_element_by_tag_name("iframe"))
 
     action_tab = ActionChains(driver)
@@ -145,7 +145,13 @@ def add_attributes(mail, phone, department, position):
     action_down = ActionChains(driver) 
     action_down.send_keys(Keys.DOWN)
 
-    for i in range(3):
+    if(first):
+        tab_iterations = 3
+    else:
+        tab_iterations = 4
+    
+    
+    for i in range(tab_iterations):
         action_tab.perform()
 
     action_enter.perform()
@@ -153,6 +159,7 @@ def add_attributes(mail, phone, department, position):
     actions1 = ActionChains(driver)
     actions1.send_keys(mail)
     actions1.perform()
+
     action_enter.perform()
 
     for i in range(7):
@@ -239,16 +246,18 @@ def run():
     path_osoby = os.getcwd()[:-8] + "\data\\new_users.csv"
     with open(path_osoby, newline='', encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile, delimiter=';')
+        first = True
         for row in reader:
             add_user(row['sammaccountname'], row['givenname'], row['surname'], row['password'])
 
             handles = driver.window_handles
             driver.switch_to_window(handles[0])
 
-            add_attributes(row['emailaddress'], row['telephoneNumber'], row['department'], row['title'])
+            add_attributes(row['emailaddress'], row['telephoneNumber'], row['department'], row['title'], first)
 
             handles = driver.window_handles
             driver.switch_to_window(handles[0])
+            first = False
         sys.exit()
 
 def main():
