@@ -11,7 +11,7 @@ import sys
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 
-geckodriver_path = os.getcwd()[:-8] + "\drivers\\geckodriver.exe"
+geckodriver_path = os.getcwd() + "\drivers\\geckodriver.exe"
 driver = webdriver.Firefox(executable_path=geckodriver_path)
 
 
@@ -117,9 +117,6 @@ def add_user(userPrincipalName, name, surname, password):
     actions1.send_keys(Keys.TAB * 4)
     actions1.perform()
     time.sleep(0.5)
-    actions2 = ActionChains(driver) 
-    actions2.send_keys(Keys.DOWN * 4)
-    actions2.perform()
     actions3 = ActionChains(driver) 
     actions3.send_keys(Keys.ENTER)
     actions3.perform()
@@ -234,7 +231,7 @@ def type_id(item, input):
 
 
 def run():
-    path = os.getcwd()[:-8] + "\data\web_exchange.json"
+    path = os.getcwd() + "\data\web_exchange.json"
     file = open(path)
     data = json.load(file)
 
@@ -243,7 +240,7 @@ def run():
     login(data['login'])
     time.sleep(1)
 
-    path_osoby = os.getcwd()[:-8] + "\data\\new_users.csv"
+    path_osoby = os.getcwd() + "\data\\new_users.csv"
     with open(path_osoby, newline='', encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile, delimiter=';')
         first = True

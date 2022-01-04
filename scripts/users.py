@@ -13,10 +13,10 @@ def removeAccents(input_text):
     return input_text.translate(translator)
 
 
-path_new_users = os.getcwd()[:-8] + "\data\\new_users.csv"
+path_new_users = os.getcwd() + "\data\\new_users.csv"
 result = open(path_new_users, "w", newline='', encoding="utf-8")
 
-path_osoby_input = os.getcwd()[:-8] + "\data\\osoby_input.csv"
+path_osoby_input = os.getcwd() + "\data\\osoby_input.csv"
 file = open(path_osoby_input, newline='', encoding="utf-8")
 reader = csv.reader(file, delimiter=';')
 
@@ -40,7 +40,7 @@ for row in reader:
         department_code = name.split(' ', 1)[1][-4:-1]
         ou = "OU=" + department_code + ",OU=BIURO,OU=RZGW,DC=krakow,DC=rzgw,DC=gov,DC=pl"
         #department
-        path_department = os.getcwd()[:-8] + "\data\\decode_department.csv"
+        path_department = os.getcwd() + "\data\\decode_department.csv"
         with open(path_department, newline='', encoding="utf-8") as department_file:
             decode = csv.reader(department_file, delimiter=';')
             for dep in decode:
