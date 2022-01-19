@@ -16,12 +16,16 @@ def removeAccents(input_text):
 path_new_users = os.getcwd() + "\data\\new_users.csv"
 result = open(path_new_users, "w", newline='', encoding="utf-8")
 
+path_to_send = os.getcwd() + "\data\\to_send.csv"
+to_send = open(path_to_send, "w", newline='', encoding="utf-8")
+
 path_osoby_input = os.getcwd() + "\data\\osoby_input.csv"
 file = open(path_osoby_input, newline='', encoding="utf-8")
 reader = csv.reader(file, delimiter=';')
 
 
 i = 0
+to_send.write("name;userprincipialname;emailaddress;password\n")
 for row in reader:
     if i == 0:
         data = ""
@@ -35,9 +39,9 @@ for row in reader:
         telephone_number = row[2]
         title = row[3]
         givenname = name.split(' ', 1)[0]
-        surname = name.split(' ', 1)[1][:len(name.split(' ', 1)[1]) - 6]
+        surname = name.split(' (', 1)[0].split(' ', 1)[1]
         userprincipialname = sammaccountname + "@krakow.rzgw.gov.pl"
-        department_code = name.split(' ', 1)[1][-4:-1]
+        department_code = name.split(' ', 1)[1].split('(', 1)[1][:-1]
         ou = "OU=" + department_code + ",OU=BIURO,OU=RZGW,DC=krakow,DC=rzgw,DC=gov,DC=pl"
         #department
         path_department = os.getcwd() + "\data\\decode_department.csv"
@@ -54,6 +58,8 @@ for row in reader:
         result.write(sammaccountname + ";" + name + ";" + telephone_number + ";" + title + ";" + givenname + ";" 
         + surname + ";" + userprincipialname + ";" + ou + ";"
         + Company + ";" + emailaddress + ";" + department +  ";" + telephone_number[-3:] + ";" + password + "\n")
+
+        to_send.write(f"{name};{userprincipialname};{emailaddress};{password}\n")
         
     i += 1
 

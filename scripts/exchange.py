@@ -131,6 +131,8 @@ def add_user(userPrincipalName, name, surname, password):
 
 
 def add_attributes(mail, phone, department, position, first):
+    is_biuro = department[:2] != 'ZZ'
+
     driver.switch_to_frame(driver.find_element_by_tag_name("iframe"))
 
     action_tab = ActionChains(driver)
@@ -188,7 +190,10 @@ def add_attributes(mail, phone, department, position, first):
     action1.perform()
 
     action2 = ActionChains(driver)
-    action2.send_keys("Biuro")
+    if is_biuro:
+        action2.send_keys("Biuro")
+    else:
+        action2.send_keys(department)
     action2.perform()
 
     action3 = ActionChains(driver)
@@ -202,7 +207,8 @@ def add_attributes(mail, phone, department, position, first):
 
     time.sleep(1)
 
-    type_id("ResultPanePlaceHolder_Mailbox_ContactInformation_contentContainer_ContactInformationPlaceHolder_ctl00_tbxCity", "Kraków")
+    if is_biuro:
+        type_id("ResultPanePlaceHolder_Mailbox_ContactInformation_contentContainer_ContactInformationPlaceHolder_ctl00_tbxCity", "Kraków")
     type_id("ResultPanePlaceHolder_Mailbox_ContactInformation_contentContainer_ContactInformationPlaceHolder_tbxPhone", phone)
 
     organization_tab = driver.find_element_by_xpath("//*[@id=\"bookmarklink_3\"]")
